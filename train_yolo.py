@@ -50,6 +50,10 @@ def train_model(config=None):
         name=run_name,
         device=devices,
     )
+    print(results)
+    metrics = results.pandas().iloc[-1].to_dict()
+    # send metrics to W&B
+    wandb.log(metrics)
 
     
     path_weights = f"{project}/{run_name}/weights/best.pt"
