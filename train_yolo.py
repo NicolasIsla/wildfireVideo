@@ -11,22 +11,6 @@ def train_model(config=None):
     project = config.get("project", "default_project")
     run_name = config.get("name", wandb.run.name)
 
-    # Configurar augmentaciones
-    augmentations = {
-        "hsv_h": config.hsv_h,
-        "hsv_s": config.hsv_s,
-        "hsv_v": config.hsv_v,
-        "degrees": config.degrees,
-        "translate": config.translate,
-        "scale": config.scale,
-        "shear": config.shear,
-        "perspective": config.perspective,
-        "fliplr": config.fliplr,
-        "mosaic": config.mosaic,
-        "mixup": config.mixup,
-        "auto_augment": config.auto_augment,
-    }
-
     # Entrenar el modelo
     model = YOLO(config.model_weights)
     results = model.train(
@@ -36,7 +20,18 @@ def train_model(config=None):
         batch=config.batch,
         lr0=config.lr0,
         momentum=config.momentum,
-        augmentations=augmentations,
+        hsv_h=config.hsv_h,
+        hsv_s=config.hsv_s,
+        hsv_v=config.hsv_v,
+        degrees=config.degrees,
+        translate=config.translate,
+        scale=config.scale,
+        shear=config.shear,
+        perspective=config.perspective,
+        fliplr=config.fliplr,
+        mosaic=config.mosaic,
+        mixup=config.mixup,
+        autoaugment=config.auto_augment,  # Sólo si 'autoaugment' está soportado por Ultralytics
         project=project,
         name=run_name,
     )

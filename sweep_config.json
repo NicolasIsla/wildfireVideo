@@ -77,9 +77,6 @@
     "mixup": {
       "min": 0.0,
       "max": 1.0
-    },
-    "auto_augment": {
-      "values": ["randaugment", "autoaugment", "augmix"]
     }
   }
 }
