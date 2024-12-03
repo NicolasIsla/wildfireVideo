@@ -2,6 +2,7 @@ import json
 import wandb
 from ultralytics import YOLO
 
+
 def train_model(config=None):
     # Inicializa W&B con los parámetros actuales
     wandb.init(config=config)
@@ -16,29 +17,40 @@ def train_model(config=None):
     results = model.train(
         data=config.data,
         epochs=config.epochs,
-        imgsz=config.imgsz,
         batch=config.batch,
+        imgsz=config.imgsz,
         lr0=config.lr0,
+        lrf=config.lrf,
         momentum=config.momentum,
+        weight_decay=config.weight_decay,
+        warmup_epochs=config.warmup_epochs,
+        warmup_momentum=config.warmup_momentum,
+        warmup_bias_lr=config.warmup_bias_lr,
+        box=config.box,
+        cls=config.cls,
+        dfl=config.dfl,
+        pose=config.pose,
+        dropout=config.dropout,
         hsv_h=config.hsv_h,
         hsv_s=config.hsv_s,
         hsv_v=config.hsv_v,
         degrees=config.degrees,
         translate=config.translate,
         scale=config.scale,
-        shear=config.shear,
-        perspective=config.perspective,
+        flipud=config.flipud,
         fliplr=config.fliplr,
         mosaic=config.mosaic,
         mixup=config.mixup,
-        # autoaugment=config.auto_augment,  # Sólo si 'autoaugment' está soportado por Ultralytics
+        copy_paste=config.copy_paste,
+        erasing=config.erasing,
         project=project,
         name=run_name,
     )
 
     # Log de resultados
-    wandb.log({"val_loss": results["metrics/val_loss"]})
+    wandb.log({"val_loss": results.get("metrics/val_loss", None)})
     wandb.finish()
+
 
 if __name__ == "__main__":
     import argparse
