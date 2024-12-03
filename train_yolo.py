@@ -11,6 +11,9 @@ def train_model(config=None):
     # Acceso seguro a los parámetros necesarios
     project = config.get("project", "default_project")
     run_name = config.get("name", wandb.run.name)
+    # devide 0 and 1
+    devices_str  = "0,1"
+    devices = [int(d) for d in args.devices.split(',')] if devices_str else None
 
     # Entrenar el modelo
     model = YOLO(config.model_weights)
@@ -45,6 +48,7 @@ def train_model(config=None):
         erasing=config.erasing,
         project=project,
         name=run_name,
+        device=devices,
     )
 
     # Log de resultados
