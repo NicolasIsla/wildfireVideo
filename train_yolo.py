@@ -51,8 +51,10 @@ def train_model(config=None):
         device=devices,
     )
 
-    # Log de resultados
-    wandb.log({"val_loss": results.get("metrics/val_loss", None)})
+    
+    path_weights = f"{project}/{run_name}/weights/best.pt"
+    print(f"Training completed. Best model weights saved at: {path_weights}")
+
     wandb.finish()
 
 
