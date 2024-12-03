@@ -1,5 +1,6 @@
 import json
 import wandb
+from wandb.integration.ultralytics import add_wandb_callback
 from ultralytics import YOLO
 
 
@@ -17,7 +18,8 @@ def train_model(config=None):
 
     # Entrenar el modelo
     model = YOLO(config.model_weights)
-    results = model.train(
+    add_wandb_callback(model, config, log_model=True)
+    model.train(
         data=config.data,
         epochs=config.epochs,
         batch=config.batch,
@@ -51,15 +53,7 @@ def train_model(config=None):
         device=devices,
     )
     
-    # Registra métricas explícitamente en cada época
-    for epoch in range(config.epochs):
-        metrics = results.metrics
-        wandb.log({
-            "epoch": epoch,
-            "val/box_loss": metrics.get("val/box_loss", None),
-            "val/cls_loss": metrics.get("val/cls_loss", None),
-            "val/obj_loss": metrics.get("val/obj_loss", None),
-        })
+
     
     path_weights = f"{project}/{run_name}/weights/best.pt"
     print(f"Training completed. Best model weights saved at: {path_weights}")
