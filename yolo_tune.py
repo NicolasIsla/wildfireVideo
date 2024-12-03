@@ -1,14 +1,11 @@
 import json
-import wandb
 # from wandb.integration.ultralytics import add_wandb_callback
 from ultralytics import YOLO
 
 
 def train_model(config=None):
     # Inicializa W&B con los parámetros actuales
-    wandb.init(config=config)
-    config = wandb.config
-
+    # wandb.init(config=config)
     # Acceso seguro a los parámetros necesarios
     project = config.get("project", "default_project")
     run_name = config.get("name", wandb.run.name)
@@ -21,8 +18,9 @@ def train_model(config=None):
     # add_wandb_callback(model)
     model.tune(
         data=config.data,
-        epochs=config.epochs,
-        iterations=2,
+        epochs=50,
+        iterations=100,
+        devices=devices,
         
     )
     
@@ -31,7 +29,6 @@ def train_model(config=None):
     path_weights = f"{project}/{run_name}/weights/best.pt"
     print(f"Training completed. Best model weights saved at: {path_weights}")
 
-    wandb.finish()
 
 
 if __name__ == "__main__":

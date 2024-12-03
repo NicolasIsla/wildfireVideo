@@ -1,6 +1,6 @@
 {
     "model_weights": "yolov5s.pt",
-    "data": "/data/nisla/DS_08_V1/DS/data.yaml",
+    "data": "/data/nisla/combined/DS/data.yaml",
     "epochs": 2,
     "time": null,
     "patience": 100,
