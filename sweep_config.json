@@ -6,10 +6,10 @@
   },
   "parameters": {
     "project": {
-      "value": "test_sweep"
+      "value": "final_project"
     },
     "name": {
-      "value": "experiment_name"
+      "value": "v"
     },
     "model_weights": {
       "value": "yolov5s.pt"
