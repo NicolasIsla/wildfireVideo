@@ -50,8 +50,10 @@ def train_model(config=None):
         name=run_name,
         device=devices,
     )
-    print(results)
-    metrics = results.pandas().iloc[-1].to_dict()
+    # Validate the model
+    metrics = model.val()  # no arguments needed, dataset and settings remembered
+    
+    
     # send metrics to W&B
     wandb.log(metrics)
 
