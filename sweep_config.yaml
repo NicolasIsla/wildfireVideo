@@ -1,0 +1,52 @@
+method: bayes  # Método de optimización
+metric:
+  name: val_loss  # Métrica objetivo
+  goal: minimize  # Minimizar la pérdida de validación
+parameters:
+  epochs:
+    values: [50, 100, 150]
+  batch:
+    values: [8, 16, 32]
+  lr0:
+    min: 0.0001
+    max: 0.01
+  momentum:
+    min: 0.8
+    max: 0.99
+  imgsz:
+    values: [416, 512, 640]
+  hsv_h:
+    min: 0.0
+    max: 0.1  # Variabilidad de tono
+  hsv_s:
+    min: 0.0
+    max: 1.0  # Saturación
+  hsv_v:
+    min: 0.0
+    max: 1.0  # Brillo
+  degrees:
+    min: -15
+    max: 15  # Rotación
+  translate:
+    min: 0.0
+    max: 0.2  # Traslación
+  scale:
+    min: 0.5
+    max: 1.5  # Escalado
+  shear:
+    min: 0.0
+    max: 10.0  # Sesgo
+  perspective:
+    min: 0.0
+    max: 0.001  # Perspectiva
+  fliplr:
+    min: 0.0
+    max: 1.0  # Flip horizontal
+  mosaic:
+    min: 0.0
+    max: 1.0  # Probabilidad de mosaic
+  mixup:
+    min: 0.0
+    max: 1.0  # Probabilidad de mixup
+  auto_augment:
+    values: ["randaugment", "autoaugment", "augmix"]  # Políticas de augmentación
