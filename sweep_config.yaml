@@ -1,3 +1,6 @@
+parameters:
+  project:
+    value: "yolo_augmentation_sweep"  # Fijo
 method: bayes  # Método de optimización
 metric:
   name: val_loss  # Métrica objetivo
