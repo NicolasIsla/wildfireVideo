@@ -22,7 +22,7 @@ def train_model(config=None):
     model.tune(
         data=config.data,
         epochs=config.epochs,
-        iterations=500,
+        iterations=2,
         
     )
     
