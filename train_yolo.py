@@ -31,7 +31,7 @@ def train_model(config=None):
         fliplr=config.fliplr,
         mosaic=config.mosaic,
         mixup=config.mixup,
-        autoaugment=config.auto_augment,  # Sólo si 'autoaugment' está soportado por Ultralytics
+        # autoaugment=config.auto_augment,  # Sólo si 'autoaugment' está soportado por Ultralytics
         project=project,
         name=run_name,
     )
