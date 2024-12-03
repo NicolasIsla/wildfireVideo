@@ -50,13 +50,16 @@ def train_model(config=None):
         name=run_name,
         device=devices,
     )
-    # Validate the model
-    metrics = model.val()  # no arguments needed, dataset and settings remembered
     
-    
-    # send metrics to W&B
-    wandb.log(metrics)
-
+    # Registra métricas explícitamente en cada época
+    for epoch in range(config.epochs):
+        metrics = results.metrics
+        wandb.log({
+            "epoch": epoch,
+            "val/box_loss": metrics.get("val/box_loss", None),
+            "val/cls_loss": metrics.get("val/cls_loss", None),
+            "val/obj_loss": metrics.get("val/obj_loss", None),
+        })
     
     path_weights = f"{project}/{run_name}/weights/best.pt"
     print(f"Training completed. Best model weights saved at: {path_weights}")
