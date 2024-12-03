@@ -73,6 +73,5 @@ if __name__ == "__main__":
     with open(args.sweep_config, "r") as f:
         sweep_config = json.load(f)
 
-    # Crear y ejecutar el sweep
-    sweep_id = wandb.sweep(sweep_config, project=sweep_config["parameters"]["project"]["value"])
-    wandb.agent(sweep_id, function=train_model)
+    
+    train_model(sweep_config)
