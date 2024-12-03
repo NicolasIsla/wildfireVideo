@@ -1,3 +1,4 @@
+import json
 import wandb
 from ultralytics import YOLO
 
@@ -6,8 +7,9 @@ def train_model(config=None):
     wandb.init(config=config)
     config = wandb.config
 
-    # Cargar el modelo YOLO
-    model = YOLO(config.model_weights)
+    # Acceso seguro a los parámetros necesarios
+    project = config.get("project", "default_project")
+    run_name = config.get("name", wandb.run.name)
 
     # Configurar augmentaciones
     augmentations = {
@@ -26,6 +28,7 @@ def train_model(config=None):
     }
 
     # Entrenar el modelo
+    model = YOLO(config.model_weights)
     results = model.train(
         data=config.data,
         epochs=config.epochs,
@@ -33,9 +36,9 @@ def train_model(config=None):
         batch=config.batch,
         lr0=config.lr0,
         momentum=config.momentum,
-        augmentations=augmentations,  # Pasar augmentaciones
-        project=config.project,
-        name=config.name,
+        augmentations=augmentations,
+        project=project,
+        name=run_name,
     )
 
     # Log de resultados
@@ -43,32 +46,17 @@ def train_model(config=None):
     wandb.finish()
 
 if __name__ == "__main__":
-    sweep_config = {
-        "method": "bayes",
-        "metric": {"name": "val_loss", "goal": "minimize"},
-        "parameters": {
-            "model_weights": {"value": "yolov5s.pt"},
-            "data": {"value": "/data/nisla/DS_08_V1/DS/data.yaml"},
-            "epochs": {"values": [1, 2, 3]},
-            "batch": {"values": [8, 16, 32, 64]},
-            "lr0": {"min": 0.0001, "max": 0.01},
-            "momentum": {"min": 0.8, "max": 0.99},
-            "imgsz": {"values": [416, 512, 640]},
-            "hsv_h": {"min": 0.0, "max": 0.1},
-            "hsv_s": {"min": 0.0, "max": 1.0},
-            "hsv_v": {"min": 0.0, "max": 1.0},
-            "degrees": {"min": -15, "max": 15},
-            "translate": {"min": 0.0, "max": 0.2},
-            "scale": {"min": 0.5, "max": 1.5},
-            "shear": {"min": 0.0, "max": 10.0},
-            "perspective": {"min": 0.0, "max": 0.001},
-            "fliplr": {"min": 0.0, "max": 1.0},
-            "mosaic": {"min": 0.0, "max": 1.0},
-            "mixup": {"min": 0.0, "max": 1.0},
-            "auto_augment": {"values": ["randaugment", "autoaugment", "augmix"]},
-        },
-    }
+    import argparse
 
-    # Inicia el sweep
-    sweep_id = wandb.sweep(sweep_config, project="yolo_augmentation_sweep")
+    # Argumento para el archivo sweep_config.json
+    parser = argparse.ArgumentParser(description="Run a YOLO sweep using W&B.")
+    parser.add_argument("--sweep_config", type=str, required=True, help="Path to the sweep_config.json file.")
+    args = parser.parse_args()
+
+    # Leer archivo sweep_config.json
+    with open(args.sweep_config, "r") as f:
+        sweep_config = json.load(f)
+
+    # Crear y ejecutar el sweep
+    sweep_id = wandb.sweep(sweep_config, project=sweep_config["parameters"]["project"]["value"])
     wandb.agent(sweep_id, function=train_model)
