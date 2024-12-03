@@ -15,7 +15,7 @@
       "value": "yolov5s.pt"
     },
     "data": {
-      "value": "data.yaml"
+      "value": "/data/nisla/DS_08_V1/DS/data.yaml"
     },
     "epochs": {
       "values": [50, 100, 150]
