@@ -19,8 +19,9 @@ def train_model(config=None):
     model.tune(
         data="/data/nisla/combined/DS/data.yaml",
         epochs=50,
-        iterations=100,
+        iterations=20,
         device=devices,
+        
         
     )
     
