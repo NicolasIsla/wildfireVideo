@@ -18,10 +18,10 @@ def train_model(config=None):
     # add_wandb_callback(model)
     model.tune(
         data="/data/nisla/combined/DS/data.yaml",
-        epochs=50,
-        iterations=20,
+        epochs=40,
+        iterations=10,
         device=devices,
-        
+
         
     )
     
