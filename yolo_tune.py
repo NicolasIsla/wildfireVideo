@@ -14,10 +14,10 @@ def train_model(config=None):
     devices = [int(d) for d in devices_str.split(',')] if devices_str else None
 
     # Entrenar el modelo
-    model = YOLO(config.model_weights)
+    model = YOLO("yolov8s.pt")
     # add_wandb_callback(model)
     model.tune(
-        data=config.data,
+        data="/data/nisla/combined/DS/data.yaml",
         epochs=50,
         iterations=100,
         devices=devices,
