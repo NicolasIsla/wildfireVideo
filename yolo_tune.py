@@ -20,7 +20,7 @@ def train_model(config=None):
         data="/data/nisla/combined/DS/data.yaml",
         epochs=50,
         iterations=100,
-        devices=devices,
+        device=devices,
         
     )
     
