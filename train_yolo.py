@@ -18,7 +18,7 @@ def train_model(config=None):
 
     # Entrenar el modelo
     model = YOLO(config.model_weights)
-    add_wandb_callback(model, enable_model_checkpoint=True)
+    add_wandb_callback(model)
     model.train(
         data=config.data,
         epochs=config.epochs,
